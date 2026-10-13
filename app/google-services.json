@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "997359310660",
+    "project_id": "guy-project-2027",
+    "storage_bucket": "guy-project-2027.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997359310660:android:75343de88cd8d65baee911",
+        "android_client_info": {
+          "package_name": "com.katza.guyfirstfbapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqG2ufZmfqoLOhL1Xl5nT4j33wg4wfefg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
