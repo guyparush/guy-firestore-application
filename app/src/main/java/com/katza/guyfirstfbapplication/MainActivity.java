@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText tz;
     private EditText grade;
     private TextView tvcontent;
-
+    private FirestoreDAO fsDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                     return insets;
                 });
 
-        FirestoreDAO fsDAO = new FirestoreDAO();
+        fsDAO = new FirestoreDAO();
 
         btnInsert = findViewById(R.id.btnInsert);
         fullname = findViewById(R.id.fullname);
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         // כפתור הצגת תלמיד לפי תעודת זהות
         View btnSelect = findViewById(R.id.btnSelect);
 
+
         btnSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,7 +84,97 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
                         });
+
             }
         });
+        View btnReadAll = findViewById(R.id.btnReadAll);
+        btnReadAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fsDAO.readAllDocuments(new IFFirestoreCallback() {
+                    @Override
+                    public void onDataReceived(ArrayList<Student> students) {
+
+                        if (students.isEmpty()) {
+                            tvcontent.setText("לא נמצאו תלמידים");
+                        } else {
+                            String result = "";
+
+                            for (int i = 0; i < students.size(); i++) {
+                                result += students.get(i).toString() + "\n";
+                            }
+
+                            tvcontent.setText(result);
+                        }
+                    }
+                });
+            }
+        });
+        View btnFilterGrade = findViewById(R.id.btnFilterGrade);
+
+        btnFilterGrade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                fsDAO.readStudentsByGrade(new IFFirestoreCallback() {
+                    @Override
+                    public void onDataReceived(ArrayList<Student> students) {
+
+                        if (students.isEmpty()) {
+                            tvcontent.setText("לא נמצאו תלמידים עם ציון מעל 87");
+                        } else {
+                            String result = "";
+
+                            for (int i = 0; i < students.size(); i++) {
+                                result += students.get(i).toString() + "\n";
+                            }
+
+                            tvcontent.setText(result);
+                        }
+                    }
+                });
+            }
+        });
+
+        View btnUpdate = findViewById(R.id.btnUpdate);
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fsDAO.updateDocument(
+                        tz.getText().toString(),
+                        Integer.parseInt(grade.getText().toString())
+                );
+            }
+        });
+
+        View btnDelete = findViewById(R.id.btnDelete);
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fsDAO.deleteDocument(tz.getText().toString());
+            }
+        });
+
+
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        fsDAO.listenToAllDocumentsChange();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (fsDAO != null) {
+            fsDAO.stopListening();
+        }
+    }
+
+
+
 }

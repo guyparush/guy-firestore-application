@@ -16,4 +16,20 @@
             <Button android:id="@+id/btnDelete" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="מחק תלמיד"/>
         </LinearLayout>
     </LinearLayout>
+    <Button
+        android:id="@+id/btnReadAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="הצג את כל התלמידים"
+        app:layout_constraintTop_toBottomOf="@id/btnSelect"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/btnFilterGrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="תלמידים עם ציון מעל 87"
+        app:layout_constraintTop_toBottomOf="@id/btnReadAll"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
