@@ -2,6 +2,7 @@
 package com.katza.guyfirstfbapplication;
 
 import android.content.Context;
+import android.widget.LinearLayout;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -133,6 +134,7 @@ public class ImageUtils {
     }
 
     // כיווץ התמונה לגודל המתאים לשמירה ב-Firestore
+
     public static byte[] compressImage(Bitmap bitmap) {
 
         if (bitmap == null || bitmap.isRecycled()) {
@@ -176,6 +178,7 @@ public class ImageUtils {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
         while (true) {
+
             for (int quality = 90; quality >= 30; quality -= 10) {
                 stream.reset();
 
@@ -228,65 +231,9 @@ public class ImageUtils {
             }
 
             current = smaller;
-
         }
-
-
-        while (true) {
-            for (int quality = 90; quality >= 30; quality -= 10) {
-                stream.reset();
-
-                boolean success = current.compress(
-                        Bitmap.CompressFormat.JPEG,
-                        quality,
-                        stream);
-
-                if (!success) {
-                    if (current != bitmap) {
-                        current.recycle();
-                    }
-                    return null;
-                }
-
-                if (stream.size() <= MAX_IMAGE_BYTES) {
-                    byte[] result = stream.toByteArray();
-
-                    if (current != bitmap) {
-                        current.recycle();
-                    }
-
-                    return result;
-                }
-            }
-
-            int newWidth = Math.max(
-                    1, (int) (current.getWidth() * 0.8));
-
-            int newHeight = Math.max(
-                    1, (int) (current.getHeight() * 0.8));
-
-            if (newWidth < 100 || newHeight < 100
-                    || (newWidth == current.getWidth()
-                    && newHeight == current.getHeight())) {
-
-                if (current != bitmap) {
-                    current.recycle();
-                }
-
-                return null;
-            }
-
-            Bitmap smaller = Bitmap.createScaledBitmap(
-                    current, newWidth, newHeight, true);
-
-            if (current != bitmap) {
-                current.recycle();
-            }
-
-            current = smaller;
-        }
-
     }
+
 
 }
 

@@ -33,7 +33,7 @@ public class ImageDAO {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        callback.onSuccess();
+                        callback.onSuccess(null);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -42,5 +42,27 @@ public class ImageDAO {
                         callback.onFailure(e);
                     }
                 });
+    }
+    public void read(
+            String name,
+            IFFirestoreImageCallback callback) {
+
+        FirebaseFirestore.getInstance()
+                .collection(COLLECTION_IMAGE_NAME)
+                .document(name)
+                .get()
+                .addOnSuccessListener(document -> {
+                    if (document.exists()) {
+                        String type = document.getString("type");
+                        String data = document.getString("data");
+
+                        callback.onSuccess(data);
+                    } else {
+                        callback.onFailure(
+                                new Exception("התמונה לא נמצאה")
+                        );
+                    }
+                })
+                .addOnFailureListener(callback::onFailure);
     }
 }
