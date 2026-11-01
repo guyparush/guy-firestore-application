@@ -90,6 +90,11 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="מחק תלמיד" />
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="התנתקות" />
 
         </LinearLayout>
 
@@ -98,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="הצג את כל התלמידים" />
+
 
         <Button
             android:id="@+id/btnFilterGrade"

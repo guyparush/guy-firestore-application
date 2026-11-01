@@ -10,9 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
+import android.content.Intent;
+import android.widget.Toast;
+import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
-
+import android.view.View;
+import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     private View btnInsert;
@@ -49,7 +52,14 @@ public class MainActivity extends AppCompatActivity {
         tz = findViewById(R.id.tz);
         grade = findViewById(R.id.grade);
         tvcontent = findViewById(R.id.tvcontent);
+        Button btnLogout = findViewById(R.id.btnLogout);
 
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
         // כפתור הוספת תלמיד
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +176,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+
+        Intent intent = new Intent(this, AuthActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        Toast.makeText(this, "התנתקת בהצלחה",
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
